@@ -1,0 +1,216 @@
+---
+import { navLinks, profile } from '../data/portfolio';
+---
+
+<header class="header">
+	<div class="container header-inner">
+		<a href="#inicio" class="logo">
+			<svg
+				viewBox="0 0 1000 1000"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				version="1.1"
+				id="svg4"
+				xml:space="preserve"
+				xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+				xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+				xmlns:svg="http://www.w3.org/2000/svg"
+			>
+				<g
+					clip-path="url(#clip0_169_2)"
+					id="g4"
+					transform="translate(-50,-50)"
+				>
+					<path
+						d="m 550,50 500,1000 H 50 Z"
+						fill="currentColor"
+						id="path2"
+						style="fill: currentColor"
+						clip-path="url(#clipPath7)"
+						inkscape:path-effect="#path-effect8"></path>
+					<path
+						d="M 836.5,337 1050,764 H 623 Z"
+						fill="currentColor"
+						id="path4"
+						style="fill: currentColor"></path>
+				</g>
+
+				<defs id="defs4">
+					<clipPath clipPathUnits="userSpaceOnUse" id="clipPath7">
+						<path
+							d="m 783,283 267,534 H 516 Z"
+							fill="#0a0a0e"
+							id="path8"
+							display="none"></path>
+						<path
+							id="lpe_path-effect8"
+							class="powerclip"
+							d="M 45,45 H 1055 V 1055 H 45 Z M 783,283 516,817 h 534 z"
+						></path>
+					</clipPath>
+				</defs>
+			</svg>
+		</a>
+
+		<nav class="nav" aria-label="Navegación principal">
+			<ul class="nav-list">
+				{
+					navLinks.map((link) => (
+						<li>
+							<a href={link.href} class="nav-link">
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<button
+			class="menu-toggle"
+			aria-label="Abrir menú"
+			aria-expanded="false"
+		>
+			<span></span>
+			<span></span>
+			<span></span>
+		</button>
+	</div>
+</header>
+
+<script>
+	const toggle = document.querySelector('.menu-toggle');
+	const nav = document.querySelector('.nav');
+
+	toggle?.addEventListener('click', () => {
+		const isOpen = nav?.classList.toggle('nav-open');
+		toggle.setAttribute('aria-expanded', String(isOpen));
+	});
+
+	document.querySelectorAll('.nav-link').forEach((link) => {
+		link.addEventListener('click', () => {
+			nav?.classList.remove('nav-open');
+			toggle?.setAttribute('aria-expanded', 'false');
+		});
+	});
+</script>
+
+<style>
+	.header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 100;
+		height: var(--header-height);
+		background: rgba(10, 10, 15, 0.85);
+		backdrop-filter: blur(12px);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 100%;
+	}
+
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+
+		color: var(--color-text);
+		transition: color var(--transition);
+	}
+
+	.logo:hover {
+		color: var(--color-accent);
+	}
+
+	.logo svg {
+		width: 28px;
+		height: 28px;
+	}
+
+	.nav-list {
+		display: flex;
+		gap: 2rem;
+	}
+
+	.nav-link {
+		font-size: 0.9rem;
+		font-weight: 500;
+		color: var(--color-text-muted);
+		transition: color var(--transition);
+		position: relative;
+	}
+
+	.nav-link:hover {
+		color: var(--color-text);
+	}
+
+	.nav-link::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		left: 0;
+		width: 0;
+		height: 2px;
+		background: var(--color-accent);
+		transition: width var(--transition);
+	}
+
+	.nav-link:hover::after {
+		width: 100%;
+	}
+
+	.menu-toggle {
+		display: none;
+		flex-direction: column;
+		gap: 5px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 4px;
+	}
+
+	.menu-toggle span {
+		display: block;
+		width: 24px;
+		height: 2px;
+		background: var(--color-text);
+		transition: var(--transition);
+	}
+
+	@media (max-width: 768px) {
+		.menu-toggle {
+			display: flex;
+		}
+
+		.nav {
+			position: fixed;
+			top: var(--header-height);
+			left: 0;
+			right: 0;
+			background: var(--color-bg-secondary);
+			border-bottom: 1px solid var(--color-border);
+			padding: 1.5rem;
+			transform: translateY(-120%);
+			opacity: 0;
+			transition: all 0.3s ease;
+			pointer-events: none;
+		}
+
+		.nav-open {
+			transform: translateY(0);
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		.nav-list {
+			flex-direction: column;
+			gap: 1.25rem;
+		}
+	}
+</style>

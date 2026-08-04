@@ -1,0 +1,80 @@
+---
+import { skills } from '../data/portfolio';
+---
+
+<section id="habilidades" class="section skills">
+	<div class="container">
+		<h2 class="section-title">Habilidades</h2>
+		<p class="section-subtitle">
+			Tecnologías y herramientas con las que trabajo
+		</p>
+
+		<div class="skills-grid">
+			{
+				skills.map((group) => (
+					<div class="skill-group">
+						<h3 class="skill-category">{group.category}</h3>
+						<ul class="skill-list">
+							{group.items.map((item) => (
+								<li class="skill-item">{item}</li>
+							))}
+						</ul>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.skills-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.skill-group {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius);
+		padding: 1.75rem;
+		transition:
+			transform var(--transition),
+			border-color var(--transition);
+	}
+
+	.skill-group:hover {
+		transform: translateY(-4px);
+		border-color: var(--color-accent);
+	}
+
+	.skill-category {
+		font-size: 1.1rem;
+		font-weight: 600;
+		margin-bottom: 1.25rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.skill-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.skill-item {
+		padding: 0.4rem 0.85rem;
+		background: var(--color-bg-secondary);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-sm);
+		font-size: 0.85rem;
+		font-family: var(--font-mono);
+		color: var(--color-text-muted);
+		transition: all var(--transition);
+	}
+
+	.skill-item:hover {
+		color: var(--color-accent);
+		border-color: var(--color-accent);
+	}
+</style>

@@ -1,0 +1,142 @@
+---
+import { profile } from '../data/portfolio';
+---
+
+<div class="terminal">
+	<div class="terminal-header">
+		<span class="dot dot-red"></span>
+		<span class="dot dot-yellow"></span>
+		<span class="dot dot-green"></span>
+		<span class="terminal-title">luislino@dev — bash</span>
+	</div>
+	<div class="terminal-body">
+		<div class="terminal-line">
+			<span class="prompt">luislino@dev:~$</span>
+			<span class="cmd">whoami</span>
+		</div>
+		<div class="terminal-output">{profile.name}</div>
+
+		<div class="terminal-line">
+			<span class="prompt">luislino@dev:~$</span>
+			<span class="cmd">focus</span>
+		</div>
+		<div class="terminal-output">Backend Development</div>
+		<div class="terminal-output">Cybersecurity</div>
+		<div class="terminal-output">Automation</div>
+
+		<div class="terminal-line">
+			<span class="prompt">luislino@dev:~$</span>
+			<span class="cmd">stack</span>
+		</div>
+		<div class="terminal-output">Python</div>
+		<div class="terminal-output">Django</div>
+		<div class="terminal-output">PostgreSQL</div>
+		<div class="terminal-output">Docker</div>
+		<div class="terminal-output">Linux</div>
+
+		<div class="terminal-line">
+			<span class="prompt">luislino@dev:~$</span>
+			<span class="cmd">status</span>
+		</div>
+		<div class="terminal-output status-line">
+			Building secure applications<span class="cursor">_</span>
+		</div>
+	</div>
+</div>
+
+<style>
+	.terminal {
+		background: #1a1a26;
+		border: 1px solid #2a2a3a;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+		width: 100%;
+		max-width: 100%;
+		text-align: left;
+	}
+
+	.terminal-header {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0.75rem 1rem;
+		background: #12121a;
+		border-bottom: 1px solid #2a2a3a;
+	}
+
+	.dot {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		flex-shrink: 0;
+	}
+
+	.dot-red {
+		background: #ff5f57;
+	}
+	.dot-yellow {
+		background: #febc2e;
+	}
+	.dot-green {
+		background: #28c840;
+	}
+
+	.terminal-title {
+		margin-left: auto;
+		font-family: 'JetBrains Mono', ui-monospace, monospace;
+		font-size: 0.75rem;
+		color: #8888a0;
+	}
+
+	.terminal-body {
+		padding: 1.25rem 1.5rem;
+		font-family: 'JetBrains Mono', ui-monospace, monospace;
+		font-size: 0.85rem;
+		line-height: 1.6;
+		text-align: left;
+	}
+
+	.terminal-line {
+		margin-top: 0.75rem;
+	}
+
+	.terminal-line:first-child {
+		margin-top: 0;
+	}
+
+	.prompt {
+		color: #28c840;
+		margin-right: 0.5rem;
+	}
+
+	.cmd {
+		color: #e4e4ef;
+	}
+
+	.terminal-output {
+		color: #8888a0;
+	}
+
+	.status-line {
+		color: #c3e88d;
+	}
+
+	.cursor {
+		animation: blink 1s step-end infinite;
+		color: #28c840;
+	}
+
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.terminal-body {
+			font-size: 0.75rem;
+			padding: 1rem;
+		}
+	}
+</style>

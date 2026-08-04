@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	content?: string;
+	author?: string;
+	description?: string;
+}
+
+const {
+	title = 'luislinodev | Backend Developer & Cybersecurity',
+	author = 'Luis Carlos Lino',
+	description = 'Desarrollador Backend con Python y Django, automatización, despliegue y ciberseguridad.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#0a0a0e" />
+		<meta name="robots" content="index, follow" />
+		<meta name="description" content={description} />
+		<meta name="author" content={author} />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href="https://luislino.dev/" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://luislino.dev/" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta
+			property="og:image"
+			content="https://luislino.dev/og-image.webp"
+		/>
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content="es_PE" />
+		<meta property="og:site_name" content="luislinodev · Portafolio" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@luislinodev" />
+		<meta name="twitter:creator" content="@luislinodev" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta
+			name="twitter:image"
+			content="https://luislino.dev/og-image.webp"
+		/>
+		<script type="application/ld+json" data-astro-exec="">
+			{
+				"@context": "https://schema.org",
+				"@type": "Person",
+				"name": "Luis Carlos Lino",
+				"url": "https://luislino.dev",
+				"sameAs": [
+					"https://linkedin.com/in/luislinodev",
+					"https://github.com/luislinodev",
+					"https://twitter.com/luislinodev"
+				],
+				"jobTitle": "Backend Developer"
+			}
+		</script>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

@@ -1,0 +1,349 @@
+---
+import { profile, socialLinks } from '../data/portfolio';
+import SocialIcon from './SocialIcon.astro';
+---
+
+<section id="contacto" class="section contact">
+	<div class="container">
+		<div class="contact-wrapper">
+			<div class="contact-info">
+				<h2 class="section-title">Contacto</h2>
+				<p class="section-subtitle">
+					¿Tienes un proyecto en mente? Hablemos.
+				</p>
+				<p class="contact-text">
+					Estoy disponible para proyectos freelance, colaboraciones en
+					hackathons y oportunidades relacionadas con backend,
+					automatización o ciberseguridad.
+				</p>
+				<a href={`mailto:${profile.email}`} class="contact-email"
+					>{profile.email}</a
+				>
+				<div class="contact-social">
+					{
+						socialLinks.map((link) => (
+							<a
+								href={link.url}
+								target={
+									link.icon === 'email' ? undefined : '_blank'
+								}
+								rel={
+									link.icon === 'email'
+										? undefined
+										: 'noopener noreferrer'
+								}
+								class="contact-social-link"
+								aria-label={link.name}
+							>
+								<SocialIcon icon={link.icon} size={22} />
+							</a>
+						))
+					}
+				</div>
+			</div>
+
+			<form
+				id="contact-form"
+				class="contact-form"
+				action="https://api.web3forms.com/submit"
+				method="POST"
+			>
+				<input
+					type="hidden"
+					name="access_key"
+					value={import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY}
+				/>
+
+				<input
+					type="hidden"
+					name="subject"
+					value="Nuevo mensaje desde luislino.dev"
+				/>
+
+				<input
+					type="checkbox"
+					name="botcheck"
+					tabindex="-1"
+					autocomplete="off"
+					class="hidden"
+					style="display:none"
+				/>
+
+				<div class="form-group">
+					<label for="name">Nombre</label>
+					<input
+						type="text"
+						id="name"
+						name="name"
+						required
+						minlength="2"
+						maxlength="80"
+						placeholder="Tu nombre"
+						autocomplete="name"
+					/>
+				</div>
+
+				<div class="form-group">
+					<label for="subject_user">Asunto</label>
+					<input
+						type="text"
+						id="subject_user"
+						name="subject_user"
+						required
+						minlength="5"
+						maxlength="120"
+						autocomplete="off"
+						placeholder="Oferta laboral, proyecto, consulta..."
+					/>
+				</div>
+
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input
+						type="email"
+						id="email"
+						name="email"
+						required
+						maxlength="120"
+						placeholder="tu@email.com"
+						autocomplete="email"
+					/>
+				</div>
+
+				<div class="form-group">
+					<label for="message">Mensaje</label>
+					<textarea
+						id="message"
+						name="message"
+						rows="6"
+						required
+						minlength="20"
+						maxlength="2000"
+						placeholder="Cuéntame en qué puedo ayudarte..."
+					></textarea>
+				</div>
+
+				<button id="submit-btn" type="submit" class="btn btn-primary"
+					>Enviar mensaje</button
+				>
+
+				<p
+					id="form-status"
+					class="form-status"
+					aria-live="polite"
+					role="status"
+				>
+				</p>
+			</form>
+		</div>
+	</div>
+</section>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const form = document.getElementById('contact-form');
+		const button = document.getElementById('submit-btn');
+		const status = document.getElementById('form-status');
+
+		if (!(form instanceof HTMLFormElement)) return;
+		if (!(button instanceof HTMLButtonElement)) return;
+		if (!(status instanceof HTMLElement)) return;
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			button.disabled = true;
+			button.textContent = 'Enviando...';
+			form.setAttribute('aria-busy', 'true');
+
+			status.textContent = '';
+			status.className = 'form-status';
+
+			try {
+				const formData = new FormData(form);
+
+				// Usar el asunto escrito por el usuario como asunto del correo
+				const userSubject = formData.get('subject_user');
+
+				if (typeof userSubject === 'string' && userSubject.trim()) {
+					formData.set(
+						'subject',
+						`📩 ${userSubject.trim()} | luislino.dev`,
+					);
+				}
+
+				const response = await fetch(
+					'https://api.web3forms.com/submit',
+					{
+						method: 'POST',
+						body: formData,
+					},
+				);
+
+				const result = await response.json();
+
+				if (!response.ok || !result.success) {
+					throw new Error(result.message || 'Error al enviar');
+				}
+
+				status.textContent =
+					'✅ Gracias por tu mensaje. Te responderé lo antes posible.';
+				status.classList.add('success');
+
+				form.reset();
+			} catch (error) {
+				const message =
+					error instanceof Error
+						? error.message
+						: 'Error desconocido';
+
+				console.error(message);
+
+				status.textContent =
+					'❌ No se pudo enviar el mensaje. Inténtalo nuevamente en unos minutos.';
+				status.classList.add('error');
+			} finally {
+				button.disabled = false;
+				button.textContent = 'Enviar mensaje';
+				form.removeAttribute('aria-busy');
+
+				status.scrollIntoView({
+					behavior: 'smooth',
+					block: 'nearest',
+				});
+			}
+		});
+	});
+</script>
+
+<style>
+	.contact-wrapper {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+		align-items: start;
+	}
+
+	.contact-text {
+		color: var(--color-text-muted);
+		margin-bottom: 1.5rem;
+		font-size: 1.05rem;
+	}
+
+	.contact-email {
+		display: inline-block;
+		font-family: var(--font-mono);
+		font-size: 1.1rem;
+		color: var(--color-accent);
+		margin-bottom: 2rem;
+		transition: opacity var(--transition);
+	}
+
+	.contact-email:hover {
+		opacity: 0.8;
+	}
+
+	.contact-social {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.contact-social-link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		width: 48px;
+		height: 48px;
+		padding: 0;
+
+		color: var(--color-text-muted);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-sm);
+		transition: all var(--transition);
+	}
+
+	.contact-social-link:hover {
+		color: var(--color-accent);
+		border-color: var(--color-accent);
+	}
+
+	.contact-form {
+		background: var(--color-bg-card);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius);
+		padding: 2rem;
+	}
+
+	.form-group {
+		margin-bottom: 1.25rem;
+	}
+
+	.form-group label {
+		display: block;
+		font-size: 0.85rem;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+		color: var(--color-text-muted);
+	}
+
+	.form-group input,
+	.form-group textarea {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		background: var(--color-bg-secondary);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-sm);
+		color: var(--color-text);
+		font-family: var(--font-sans);
+		font-size: 0.95rem;
+		transition: border-color var(--transition);
+	}
+
+	.form-group input:focus,
+	.form-group textarea:focus {
+		outline: none;
+		border-color: var(--color-accent);
+	}
+
+	.form-status {
+		margin-top: 1rem;
+		min-height: 1.5rem;
+		font-size: 0.95rem;
+		font-weight: 500;
+	}
+
+	.form-status.success {
+		color: #22c55e;
+	}
+
+	.form-status.error {
+		color: #ef4444;
+	}
+
+	button:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+	}
+
+	.form-group textarea {
+		resize: vertical;
+		min-height: 120px;
+	}
+
+	@media (max-width: 768px) {
+		.contact-wrapper {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.contact-info {
+			text-align: center;
+		}
+
+		.contact-social {
+			justify-content: center;
+		}
+	}
+</style>
